@@ -1,26 +1,36 @@
-#  Как работать с репозиторием финального задания
+## О проекте
 
-### Что нужно сделать
+Kittygram - это приложение для обмена фотографиями котиков. Оно позволяет пользователям загружать, просматривать фотографии котиков.
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+## Технологии
 
-## Как проверить работу с помощью автотестов
+При работе над проектом были применены следующие технологии:
+    - PostgreSQL
+    - Docker и Docker-Compose
+    - JavaScript
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+
+### Установка для Windows:
+
+Клонировать репозиторий:
+
+```
+git clone https://github.com/chudyashovFAN/kittygram_final
 ```
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+Запустить контейнеры
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
+```
+docker compose up
+```
 
-## Чек-лист для проверки перед отправкой задания
+Выгрузить статику и выполнить миграции:
 
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+```
+docker compose exec backend python manage.py collectstatic
+docker compose exec backend cp -r /app/collected_static/. /backend_static/static/
+```
+
+```
+python3 manage.py migrate
+```
